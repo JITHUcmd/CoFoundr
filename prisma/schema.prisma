@@ -1,0 +1,1519 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  ADMIN
+  FOUNDER
+  INVESTOR
+  ADVISOR
+  RECRUITER
+  STUDENT
+  FREELANCER
+  STARTUP_TALENT
+}
+
+enum UserStatus {
+  ACTIVELY_LOOKING
+  OPEN_TO_OPPORTUNITIES
+  NOT_LOOKING
+}
+
+enum Availability {
+  FULL_TIME
+  PART_TIME
+  CONTRACT
+  ADVISORY
+  INVESTOR_ONLY
+}
+
+enum SkillProficiency {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
+
+enum StartupGoal {
+  UNICORN
+  VENTURE_BACKED_STARTUP
+  BOOTSTRAPPED_SAAS
+  LIFESTYLE_BUSINESS
+  AGENCY
+  OPEN_SOURCE
+  SOCIAL_IMPACT
+  AI_STARTUP
+  E_COMMERCE
+  SIDE_PROJECT
+}
+
+enum FundingPreference {
+  BOOTSTRAPPED
+  ANGEL_FUNDING
+  VENTURE_CAPITAL
+  CROWDFUNDING
+}
+
+enum RiskAppetite {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum CommitmentLevel {
+  EXPLORING
+  PART_TIME
+  FULL_TIME
+}
+
+enum WorkStyle {
+  REMOTE
+  HYBRID
+  IN_PERSON
+}
+
+enum PortfolioLinkType {
+  GITHUB
+  LINKEDIN
+  WEBSITE
+  RESUME
+  PITCH_DECK
+  OTHER
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+  PDF
+  CASE_STUDY
+  STARTUP_SCREENSHOT
+  RESUME
+  PITCH_DECK
+  OTHER
+}
+
+enum UserMediaPurpose {
+  PROFILE_PHOTO
+  PORTFOLIO
+  RESUME
+  CASE_STUDY
+  OTHER
+}
+
+enum StartupMediaPurpose {
+  LOGO
+  SCREENSHOT
+  PITCH_DECK
+  CASE_STUDY
+  OTHER
+}
+
+enum OpportunityMediaPurpose {
+  ROLE_BRIEF
+  CASE_STUDY
+  OTHER
+}
+
+enum StartupStage {
+  IDEA
+  MVP
+  PRE_SEED
+  SEED
+  SERIES_A_PLUS
+  BETA
+  REVENUE
+  SCALING
+}
+
+enum FundingStage {
+  BOOTSTRAPPED
+  FUNDRAISING_NOW
+  PRE_SEED
+  SEED
+  SERIES_A_PLUS
+  SERIES_A
+  SERIES_B
+  FUNDRAISING
+}
+
+enum HiringStatus {
+  NOT_HIRING
+  HIRING
+  PAUSED
+}
+
+enum CompensationType {
+  EQUITY
+  SALARY
+  BOTH
+}
+
+enum OpportunityStatus {
+  OPEN
+  PAUSED
+  FILLED
+  CLOSED
+}
+
+enum OpportunityType {
+  TECHNICAL_CO_FOUNDER
+  BUSINESS_CO_FOUNDER
+  ADVISOR
+  INVESTOR
+  DEVELOPER
+  DESIGNER
+  PRODUCT_MANAGER
+  MARKETING
+  OTHER
+}
+
+enum ExperienceLevel {
+  ENTRY
+  MID
+  SENIOR
+  LEAD
+  ANY
+}
+
+enum SwipeAction {
+  LEFT
+  RIGHT
+  SUPER_LIKE
+}
+
+enum MatchStatus {
+  ACTIVE
+  ARCHIVED
+  BLOCKED
+  UNMATCHED
+  EXPIRED
+}
+
+enum ConversationType {
+  MATCH
+  DIRECT
+  SUPPORT
+}
+
+enum ParticipantRole {
+  MEMBER
+  ADMIN
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  SYSTEM
+}
+
+enum VerificationType {
+  LINKEDIN
+  GITHUB
+  COMPANY_EMAIL
+  STARTUP
+}
+
+enum VerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  EXPIRED
+  REVOKED
+}
+
+enum BadgeType {
+  LINKEDIN_VERIFIED
+  GITHUB_VERIFIED
+  COMPANY_EMAIL_VERIFIED
+  STARTUP_VERIFIED
+  TRUSTED_BUILDER
+  TOP_COLLABORATOR
+}
+
+enum ReputationArea {
+  BUILDER
+  TRUST
+  COLLABORATION
+}
+
+enum ReputationEventType {
+  ACTIVITY
+  MILESTONE
+  STARTUP_PROGRESS
+  VERIFICATION
+  REVIEW
+  PROFILE_QUALITY
+  FEEDBACK
+  RESPONSIVENESS
+  MATCH_ENGAGEMENT
+  MANUAL_ADJUSTMENT
+}
+
+enum MilestoneType {
+  IDEA_VALIDATED
+  MVP_BUILT
+  FIRST_CUSTOMER
+  FIRST_REVENUE
+  RAISED_FUNDING
+  CUSTOM
+}
+
+enum MilestoneStatus {
+  PLANNED
+  IN_PROGRESS
+  COMPLETED
+  VERIFIED
+}
+
+enum ReviewStatus {
+  PUBLISHED
+  HIDDEN
+  REMOVED
+  DISPUTED
+}
+
+enum ReportReason {
+  SPAM
+  FAKE_INVESTOR
+  FAKE_STARTUP
+  HARASSMENT
+  OTHER
+}
+
+enum ModerationStatus {
+  OPEN
+  UNDER_REVIEW
+  RESOLVED
+  DISMISSED
+}
+
+enum ModerationTargetType {
+  USER
+  STARTUP
+  OPPORTUNITY
+  MESSAGE
+  REPORT
+}
+
+enum ModerationActionType {
+  WARN
+  SUSPEND
+  VERIFY
+  REMOVE_CONTENT
+  DISMISS_REPORT
+  RESOLVE_REPORT
+}
+
+enum AnalyticsEventType {
+  PROFILE_VIEW
+  STARTUP_VIEW
+  OPPORTUNITY_VIEW
+  DISCOVERY_APPEARANCE
+  SWIPE_RECEIVED
+  MATCH_CREATED
+  MESSAGE_SENT
+}
+
+enum AnalyticsEntityType {
+  USER
+  STARTUP
+  OPPORTUNITY
+  CONVERSATION
+  MESSAGE
+  MATCH
+}
+
+enum AnalyticsMetricType {
+  PROFILE_VIEWS
+  STARTUP_VIEWS
+  OPPORTUNITY_VIEWS
+  SWIPES_RECEIVED
+  MATCHES
+  MESSAGES_SENT
+}
+
+enum ApplicationStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum NotificationType {
+  MATCH_CREATED
+  NEW_MESSAGE
+  APPLICATION_RECEIVED
+  APPLICATION_ACCEPTED
+  APPLICATION_REJECTED
+  SUPERLIKE_RECEIVED
+  STARTUP_VERIFICATION_REQUESTED
+  STARTUP_VERIFICATION_APPROVED
+  STARTUP_VERIFICATION_REJECTED
+  PROFILE_VIEW_MILESTONE
+  SYSTEM
+}
+
+model User {
+  id               String        @id @default(uuid()) @db.Uuid
+  email            String        @unique
+  username         String        @unique
+  name             String
+  profilePhotoUrl  String?
+  headline         String?
+  bio              String?
+  country          String?
+  state            String?
+  city             String?
+  status           UserStatus    @default(OPEN_TO_OPPORTUNITIES)
+  availability     Availability?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  deletedAt        DateTime?
+
+  roles                         UserRole[]
+  founderVision                 FounderVision?
+  skills                        UserSkill[]
+  industries                    UserIndustry[]
+  interests                     UserInterest[]
+  experiences                   Experience[]
+  education                     Education[]
+  portfolioLinks                PortfolioLink[]
+  uploadedMedia                 MediaAsset[]              @relation("UploadedMedia")
+  mediaAttachments              UserMediaAsset[]
+  communityMemberships          CommunityMembership[]
+  ownedStartups                 Startup[]                 @relation("OwnedStartups")
+  startupMemberships            StartupMember[]
+  accounts                      Account[]
+  authCredential                AuthCredential?
+  passwordResetTokens           PasswordResetToken[]
+  followingUsers                FollowUser[]              @relation("UserFollowing")
+  followers                     FollowUser[]              @relation("UserFollowers")
+  followedStartups              FollowStartup[]
+  savedProfiles                 SavedProfile[]            @relation("SavedProfilesByUser")
+  savedByUsers                  SavedProfile[]            @relation("SavedProfilesTargetingUser")
+  savedStartups                 SavedStartup[]
+  savedOpportunities            SavedOpportunity[]
+  applications                  Application[]             @relation("ApplicationsByApplicant")
+  applicationsReviewed          Application[]             @relation("ApplicationsReviewedByUser")
+  notifications                 Notification[]
+  swipesSent                    UserSwipe[]               @relation("UserSwipesSent")
+  swipesReceived                UserSwipe[]               @relation("UserSwipesReceived")
+  startupSwipes                 StartupSwipe[]            @relation("StartupSwipesSent")
+  opportunitySwipes             OpportunitySwipe[]        @relation("OpportunitySwipesSent")
+  userMatchesAsA                UserMatch[]               @relation("UserMatchA")
+  userMatchesAsB                UserMatch[]               @relation("UserMatchB")
+  userMatchesCreated            UserMatch[]               @relation("UserMatchesCreated")
+  startupMatches                UserStartupMatch[]        @relation("UserStartupMatches")
+  startupMatchesCreated         UserStartupMatch[]        @relation("UserStartupMatchesCreated")
+  opportunityMatches            UserOpportunityMatch[]    @relation("UserOpportunityMatches")
+  opportunityMatchesCreated     UserOpportunityMatch[]    @relation("UserOpportunityMatchesCreated")
+  conversationParticipants      ConversationParticipant[]
+  messagesSent                  Message[]                 @relation("MessagesSent")
+  messageReadReceipts           MessageReadReceipt[]
+  verifications                 UserVerification[]        @relation("UserVerifications")
+  verificationReviews           UserVerification[]        @relation("VerificationReviewer")
+  startupVerificationsSubmitted StartupVerification[]     @relation("StartupVerificationSubmitter")
+  startupVerificationReviews    StartupVerification[]     @relation("StartupVerificationReviewer")
+  badges                        UserBadge[]
+  reputation                    UserReputation?
+  reputationEvents              ReputationEvent[]
+  milestones                    UserMilestone[]
+  reviewsWritten                Review[]                  @relation("ReviewsWritten")
+  reviewsReceived               Review[]                  @relation("ReviewsReceived")
+  reportsSubmitted              Report[]                  @relation("ReportsSubmitted")
+  reportsAgainstUser            Report[]                  @relation("ReportsAgainstUser")
+  reportsAssigned               Report[]                  @relation("ReportsAssigned")
+  moderationActions             ModerationAction[]        @relation("ModerationActionsByModerator")
+  moderationActionsAgainstUser  ModerationAction[]        @relation("ModerationActionsAgainstUser")
+  blocksCreated                 UserBlock[]               @relation("BlocksCreated")
+  blockedBy                     UserBlock[]               @relation("BlockedBy")
+  analyticsEventsAsActor        AnalyticsEvent[]          @relation("AnalyticsActor")
+  analyticsEventsAsTarget       AnalyticsEvent[]          @relation("AnalyticsTarget")
+
+  @@index([country, state, city])
+  @@index([status, availability])
+  @@index([status, createdAt])
+  @@index([createdAt])
+  @@index([deletedAt])
+}
+
+model UserRole {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  type      UserType
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type])
+  @@index([type])
+}
+
+model Account {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @db.Uuid
+  type              String   @default("oauth")
+  provider          String
+  providerAccountId String
+  accessToken       String?
+  refreshToken      String?
+  expiresAt         Int?
+  tokenType         String?
+  scope             String?
+  idToken           String?
+  sessionState      String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@index([provider])
+}
+
+model AuthCredential {
+  id                String   @id @default(uuid()) @db.Uuid
+  userId            String   @unique @db.Uuid
+  passwordHash      String
+  passwordChangedAt DateTime @default(now())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([createdAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  userId    String    @db.Uuid
+  selector  String    @unique
+  tokenHash String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@index([expiresAt])
+  @@index([usedAt])
+}
+
+model Skill {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  users         UserSkill[]
+  opportunities OpportunitySkill[]
+}
+
+model Industry {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  users       UserIndustry[]
+  experiences Experience[]
+  startups    Startup[]
+}
+
+model Interest {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  users UserInterest[]
+}
+
+model UserSkill {
+  userId          String            @db.Uuid
+  skillId         String            @db.Uuid
+  proficiency     SkillProficiency?
+  yearsExperience Int?
+  isPrimary       Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  skill Skill @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([userId, skillId])
+  @@index([skillId])
+  @@index([skillId, yearsExperience])
+  @@index([isPrimary])
+}
+
+model UserIndustry {
+  userId     String   @db.Uuid
+  industryId String   @db.Uuid
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  industry Industry @relation(fields: [industryId], references: [id], onDelete: Cascade)
+
+  @@id([userId, industryId])
+  @@index([industryId])
+}
+
+model UserInterest {
+  userId     String   @db.Uuid
+  interestId String   @db.Uuid
+  createdAt  DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  interest Interest @relation(fields: [interestId], references: [id], onDelete: Cascade)
+
+  @@id([userId, interestId])
+  @@index([interestId])
+}
+
+model Experience {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  industryId  String?   @db.Uuid
+  companyName String
+  title       String
+  startDate   DateTime?
+  endDate     DateTime?
+  isCurrent   Boolean   @default(false)
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  industry Industry? @relation(fields: [industryId], references: [id], onDelete: SetNull)
+
+  @@index([userId, startDate])
+  @@index([industryId])
+}
+
+model Education {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  institution String
+  degree      String?
+  field       String?
+  startDate   DateTime?
+  endDate     DateTime?
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, startDate])
+}
+
+model FounderVision {
+  id                     String             @id @default(uuid()) @db.Uuid
+  userId                 String             @unique @db.Uuid
+  startupGoal            StartupGoal?
+  fundingPreference      FundingPreference?
+  riskAppetite           RiskAppetite?
+  commitmentLevel        CommitmentLevel?
+  workStyle              WorkStyle?
+  preferredTeamSize      Int?
+  preferredCoFounderType String?
+  remotePreference       WorkStyle?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([startupGoal, fundingPreference])
+  @@index([riskAppetite, commitmentLevel, workStyle])
+  @@index([remotePreference])
+}
+
+model PortfolioLink {
+  id        String            @id @default(uuid()) @db.Uuid
+  userId    String            @db.Uuid
+  type      PortfolioLinkType
+  label     String?
+  url       String
+  isPrimary Boolean           @default(false)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, type, url])
+  @@index([userId, type])
+}
+
+model MediaAsset {
+  id          String    @id @default(uuid()) @db.Uuid
+  uploaderId  String    @db.Uuid
+  type        MediaType
+  url         String
+  storageKey  String?
+  fileName    String?
+  mimeType    String?
+  sizeBytes   BigInt?
+  caption     String?
+  metadata    Json?
+  uploadedAt  DateTime  @default(now())
+  deletedAt   DateTime?
+
+  uploader               User                    @relation("UploadedMedia", fields: [uploaderId], references: [id], onDelete: Cascade)
+  userAttachments        UserMediaAsset[]
+  startupAttachments     StartupMediaAsset[]
+  opportunityAttachments OpportunityMediaAsset[]
+  messageAttachments     MessageAttachment[]
+
+  @@index([uploaderId, uploadedAt])
+  @@index([type])
+  @@index([deletedAt])
+}
+
+model UserMediaAsset {
+  userId       String           @db.Uuid
+  mediaAssetId String           @db.Uuid
+  purpose      UserMediaPurpose @default(PORTFOLIO)
+  createdAt    DateTime         @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@id([userId, mediaAssetId, purpose])
+  @@index([mediaAssetId])
+}
+
+model Community {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  website     String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  members CommunityMembership[]
+}
+
+model CommunityMembership {
+  userId      String   @db.Uuid
+  communityId String   @db.Uuid
+  role        String?
+  joinedAt    DateTime @default(now())
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@id([userId, communityId])
+  @@index([communityId])
+}
+
+model FollowUser {
+  id          String   @id @default(uuid()) @db.Uuid
+  followerId  String   @db.Uuid
+  followingId String   @db.Uuid
+  createdAt   DateTime @default(now())
+
+  follower  User @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  following User @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@index([followerId, createdAt])
+  @@index([followingId, createdAt])
+}
+
+model FollowStartup {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  startupId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, startupId])
+  @@index([userId, createdAt])
+  @@index([startupId, createdAt])
+}
+
+model SavedProfile {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @db.Uuid
+  savedUserId String   @db.Uuid
+  createdAt   DateTime @default(now())
+
+  user      User @relation("SavedProfilesByUser", fields: [userId], references: [id], onDelete: Cascade)
+  savedUser User @relation("SavedProfilesTargetingUser", fields: [savedUserId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, savedUserId])
+  @@index([userId, createdAt])
+  @@index([savedUserId, createdAt])
+}
+
+model SavedStartup {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  startupId String   @db.Uuid
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, startupId])
+  @@index([userId, createdAt])
+  @@index([startupId, createdAt])
+}
+
+model SavedOpportunity {
+  id            String   @id @default(uuid()) @db.Uuid
+  userId        String   @db.Uuid
+  opportunityId String   @db.Uuid
+  createdAt     DateTime @default(now())
+
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  opportunity StartupOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, opportunityId])
+  @@index([userId, createdAt])
+  @@index([opportunityId, createdAt])
+}
+
+model Startup {
+  id                        String             @id @default(uuid()) @db.Uuid
+  ownerId                   String             @db.Uuid
+  industryId                String?            @db.Uuid
+  name                      String
+  slug                      String             @unique
+  logoUrl                   String?
+  coverImageUrl             String?
+  tagline                   String?
+  description               String?
+  website                   String?
+  foundedDate               DateTime?
+  teamSize                  Int?
+  country                   String?
+  state                     String?
+  city                      String?
+  remoteAllowed             Boolean            @default(false)
+  workStyle                 WorkStyle?
+  startupStage              StartupStage       @default(IDEA)
+  fundingStage              FundingStage       @default(BOOTSTRAPPED)
+  fundingTargetAmount       Decimal?           @db.Decimal(14, 2)
+  hiringStatus              HiringStatus       @default(NOT_HIRING)
+  openRolesCount            Int                @default(0)
+  equityAvailable           Boolean            @default(false)
+  salaryAvailable           Boolean            @default(false)
+  verificationStatus        VerificationStatus @default(PENDING)
+  verificationNotes         String?
+  profileViewsCount         Int                @default(0)
+  followersCount            Int                @default(0)
+  savesCount                Int                @default(0)
+  applicationsCount         Int                @default(0)
+  createdAt                 DateTime           @default(now())
+  updatedAt                 DateTime           @updatedAt
+  archivedAt                DateTime?
+
+  owner             User                  @relation("OwnedStartups", fields: [ownerId], references: [id], onDelete: Cascade)
+  industry          Industry?             @relation(fields: [industryId], references: [id], onDelete: SetNull)
+  members           StartupMember[]
+  followers         FollowStartup[]
+  savedByUsers      SavedStartup[]
+  opportunities     StartupOpportunity[]
+  swipes            StartupSwipe[]
+  matches           UserStartupMatch[]
+  verifications     StartupVerification[]
+  mediaAttachments  StartupMediaAsset[]
+  milestones        UserMilestone[]
+  reports           Report[]
+  moderationActions ModerationAction[]
+  analyticsEvents   AnalyticsEvent[]
+
+  @@index([ownerId])
+  @@index([industryId, startupStage, fundingStage])
+  @@index([startupStage, fundingStage])
+  @@index([country, state, city])
+  @@index([remoteAllowed])
+  @@index([workStyle])
+  @@index([hiringStatus])
+  @@index([verificationStatus])
+  @@index([archivedAt])
+  @@index([archivedAt, createdAt])
+}
+
+model StartupMember {
+  id        String    @id @default(uuid()) @db.Uuid
+  startupId String    @db.Uuid
+  userId    String    @db.Uuid
+  role      String
+  isFounder Boolean   @default(false)
+  joinedAt  DateTime  @default(now())
+  leftAt    DateTime?
+
+  startup Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([startupId, userId])
+  @@index([startupId, role])
+  @@index([userId])
+  @@index([isFounder])
+}
+
+model StartupMediaAsset {
+  startupId    String              @db.Uuid
+  mediaAssetId String              @db.Uuid
+  purpose      StartupMediaPurpose @default(SCREENSHOT)
+  createdAt    DateTime            @default(now())
+
+  startup    Startup    @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@id([startupId, mediaAssetId, purpose])
+  @@index([mediaAssetId])
+}
+
+model StartupOpportunity {
+  id                 String            @id @default(uuid()) @db.Uuid
+  startupId          String            @db.Uuid
+  roleName           String
+  opportunityType    OpportunityType   @default(OTHER)
+  description        String?
+  openings           Int               @default(1)
+  experienceLevel    ExperienceLevel   @default(ANY)
+  compensationType   CompensationType
+  equityMinPercent   Decimal?          @db.Decimal(5, 2)
+  equityMaxPercent   Decimal?          @db.Decimal(5, 2)
+  salaryMin          Int?
+  salaryMax          Int?
+  salaryCurrency     String?           @db.VarChar(3)
+  commitment         CommitmentLevel?
+  remoteAllowed      Boolean           @default(false)
+  workStyle          WorkStyle?
+  country            String?
+  state              String?
+  city               String?
+  status             OpportunityStatus @default(OPEN)
+  viewsCount         Int               @default(0)
+  savesCount         Int               @default(0)
+  applicationsCount  Int               @default(0)
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  closedAt           DateTime?
+
+  startup           Startup                   @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  skills            OpportunitySkill[]
+  swipes            OpportunitySwipe[]
+  matches           UserOpportunityMatch[]
+  savedByUsers      SavedOpportunity[]
+  applications      Application[]
+  mediaAttachments  OpportunityMediaAsset[]
+  reports           Report[]
+  moderationActions ModerationAction[]
+  analyticsEvents   AnalyticsEvent[]
+
+  @@index([startupId, status])
+  @@index([roleName])
+  @@index([opportunityType, status])
+  @@index([experienceLevel, status])
+  @@index([status, createdAt])
+  @@index([compensationType])
+  @@index([commitment, status])
+  @@index([country, state, city])
+  @@index([remoteAllowed])
+  @@index([workStyle])
+  @@index([closedAt])
+}
+
+model OpportunitySkill {
+  opportunityId String @db.Uuid
+  skillId       String @db.Uuid
+
+  opportunity StartupOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  skill       Skill              @relation(fields: [skillId], references: [id], onDelete: Cascade)
+
+  @@id([opportunityId, skillId])
+  @@index([skillId])
+}
+
+model OpportunityMediaAsset {
+  opportunityId String                  @db.Uuid
+  mediaAssetId  String                  @db.Uuid
+  purpose       OpportunityMediaPurpose @default(ROLE_BRIEF)
+  createdAt     DateTime                @default(now())
+
+  opportunity StartupOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  mediaAsset  MediaAsset         @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@id([opportunityId, mediaAssetId, purpose])
+  @@index([mediaAssetId])
+}
+
+model Application {
+  id            String            @id @default(uuid()) @db.Uuid
+  opportunityId String            @db.Uuid
+  applicantId   String            @db.Uuid
+  reviewedById  String?           @db.Uuid
+  status        ApplicationStatus @default(PENDING)
+  note          String?
+  reviewNote    String?
+  reviewedAt    DateTime?
+  withdrawnAt   DateTime?
+  decidedAt     DateTime?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  opportunity StartupOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  applicant   User               @relation("ApplicationsByApplicant", fields: [applicantId], references: [id], onDelete: Cascade)
+  reviewedBy  User?              @relation("ApplicationsReviewedByUser", fields: [reviewedById], references: [id], onDelete: SetNull)
+
+  @@index([opportunityId, status, createdAt])
+  @@index([applicantId, status, createdAt])
+  @@index([reviewedById, reviewedAt])
+  @@index([opportunityId, applicantId, createdAt])
+}
+
+model UserSwipe {
+  id           String      @id @default(uuid()) @db.Uuid
+  swiperId     String      @db.Uuid
+  targetUserId String      @db.Uuid
+  action       SwipeAction
+  createdAt    DateTime    @default(now())
+
+  swiper     User @relation("UserSwipesSent", fields: [swiperId], references: [id], onDelete: Cascade)
+  targetUser User @relation("UserSwipesReceived", fields: [targetUserId], references: [id], onDelete: Cascade)
+
+  @@unique([swiperId, targetUserId])
+  @@index([targetUserId, action, createdAt])
+  @@index([swiperId, action, createdAt])
+}
+
+model StartupSwipe {
+  id              String      @id @default(uuid()) @db.Uuid
+  swiperId        String      @db.Uuid
+  targetStartupId String      @db.Uuid
+  action          SwipeAction
+  createdAt       DateTime    @default(now())
+
+  swiper       User    @relation("StartupSwipesSent", fields: [swiperId], references: [id], onDelete: Cascade)
+  targetStartup Startup @relation(fields: [targetStartupId], references: [id], onDelete: Cascade)
+
+  @@unique([swiperId, targetStartupId])
+  @@index([targetStartupId, action, createdAt])
+  @@index([swiperId, action, createdAt])
+}
+
+model OpportunitySwipe {
+  id                  String      @id @default(uuid()) @db.Uuid
+  swiperId            String      @db.Uuid
+  targetOpportunityId String      @db.Uuid
+  action              SwipeAction
+  createdAt           DateTime    @default(now())
+
+  swiper            User               @relation("OpportunitySwipesSent", fields: [swiperId], references: [id], onDelete: Cascade)
+  targetOpportunity StartupOpportunity @relation(fields: [targetOpportunityId], references: [id], onDelete: Cascade)
+
+  @@unique([swiperId, targetOpportunityId])
+  @@index([targetOpportunityId, action, createdAt])
+  @@index([swiperId, action, createdAt])
+}
+
+model UserMatch {
+  id              String      @id @default(uuid()) @db.Uuid
+  userAId         String      @db.Uuid
+  userBId         String      @db.Uuid
+  createdByUserId String?     @db.Uuid
+  status          MatchStatus @default(ACTIVE)
+  matchScore      Int         @default(0)
+  compatibilityScore Int      @default(0)
+  skillsScore     Int         @default(0)
+  founderVisionScore Int      @default(0)
+  locationScore   Int         @default(0)
+  consistencyScore Int        @default(0)
+  trustScore      Int         @default(0)
+  builderScore    Int         @default(0)
+  createdAt       DateTime    @default(now())
+  archivedAt      DateTime?
+  blockedAt       DateTime?
+  unmatchedAt     DateTime?
+
+  userA         User          @relation("UserMatchA", fields: [userAId], references: [id], onDelete: Cascade)
+  userB         User          @relation("UserMatchB", fields: [userBId], references: [id], onDelete: Cascade)
+  createdByUser User?         @relation("UserMatchesCreated", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  conversation  Conversation? @relation("UserMatchConversation")
+  reviews       Review[]
+
+  @@unique([userAId, userBId])
+  @@index([userAId, status, createdAt])
+  @@index([userBId, status, createdAt])
+  @@index([status, createdAt])
+  @@index([createdByUserId])
+}
+
+model UserStartupMatch {
+  id              String      @id @default(uuid()) @db.Uuid
+  userId          String      @db.Uuid
+  startupId       String      @db.Uuid
+  createdByUserId String?     @db.Uuid
+  status          MatchStatus @default(ACTIVE)
+  matchScore      Int         @default(0)
+  compatibilityScore Int      @default(0)
+  skillsScore     Int         @default(0)
+  founderVisionScore Int      @default(0)
+  locationScore   Int         @default(0)
+  consistencyScore Int        @default(0)
+  trustScore      Int         @default(0)
+  builderScore    Int         @default(0)
+  createdAt       DateTime    @default(now())
+  archivedAt      DateTime?
+  blockedAt       DateTime?
+  unmatchedAt     DateTime?
+
+  user          User          @relation("UserStartupMatches", fields: [userId], references: [id], onDelete: Cascade)
+  startup       Startup       @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  createdByUser User?         @relation("UserStartupMatchesCreated", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  conversation  Conversation? @relation("StartupMatchConversation")
+  reviews       Review[]
+
+  @@unique([userId, startupId])
+  @@index([startupId, status, createdAt])
+  @@index([userId, status, createdAt])
+  @@index([status, createdAt])
+  @@index([createdByUserId])
+}
+
+model UserOpportunityMatch {
+  id              String      @id @default(uuid()) @db.Uuid
+  userId          String      @db.Uuid
+  opportunityId   String      @db.Uuid
+  createdByUserId String?     @db.Uuid
+  status          MatchStatus @default(ACTIVE)
+  matchScore      Int         @default(0)
+  compatibilityScore Int      @default(0)
+  skillsScore     Int         @default(0)
+  founderVisionScore Int      @default(0)
+  locationScore   Int         @default(0)
+  consistencyScore Int        @default(0)
+  trustScore      Int         @default(0)
+  builderScore    Int         @default(0)
+  createdAt       DateTime    @default(now())
+  archivedAt      DateTime?
+  blockedAt       DateTime?
+  unmatchedAt     DateTime?
+
+  user          User               @relation("UserOpportunityMatches", fields: [userId], references: [id], onDelete: Cascade)
+  opportunity   StartupOpportunity @relation(fields: [opportunityId], references: [id], onDelete: Cascade)
+  createdByUser User?              @relation("UserOpportunityMatchesCreated", fields: [createdByUserId], references: [id], onDelete: SetNull)
+  conversation  Conversation?      @relation("OpportunityMatchConversation")
+  reviews       Review[]
+
+  @@unique([userId, opportunityId])
+  @@index([opportunityId, status, createdAt])
+  @@index([userId, status, createdAt])
+  @@index([status, createdAt])
+  @@index([createdByUserId])
+}
+
+model Conversation {
+  id                 String           @id @default(uuid()) @db.Uuid
+  type               ConversationType @default(MATCH)
+  userMatchId        String?          @unique @db.Uuid
+  startupMatchId     String?          @unique @db.Uuid
+  opportunityMatchId String?          @unique @db.Uuid
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  lastMessageAt      DateTime?
+  archivedAt         DateTime?
+
+  userMatch        UserMatch?          @relation("UserMatchConversation", fields: [userMatchId], references: [id], onDelete: SetNull)
+  startupMatch     UserStartupMatch?   @relation("StartupMatchConversation", fields: [startupMatchId], references: [id], onDelete: SetNull)
+  opportunityMatch UserOpportunityMatch? @relation("OpportunityMatchConversation", fields: [opportunityMatchId], references: [id], onDelete: SetNull)
+  participants     ConversationParticipant[]
+  messages         Message[]
+  analyticsEvents  AnalyticsEvent[]
+
+  @@index([type, lastMessageAt])
+  @@index([type, updatedAt])
+  @@index([archivedAt])
+}
+
+model ConversationParticipant {
+  conversationId    String          @db.Uuid
+  userId            String          @db.Uuid
+  role              ParticipantRole @default(MEMBER)
+  joinedAt          DateTime        @default(now())
+  mutedAt           DateTime?
+  archivedAt        DateTime?
+  lastReadAt        DateTime?
+  lastReadMessageId String?         @db.Uuid
+
+  conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadMessage Message?     @relation("ParticipantLastReadMessage", fields: [lastReadMessageId], references: [id], onDelete: SetNull)
+
+  @@id([conversationId, userId])
+  @@index([userId, archivedAt])
+  @@index([lastReadMessageId])
+}
+
+model Message {
+  id             String      @id @default(uuid()) @db.Uuid
+  conversationId String      @db.Uuid
+  senderId       String      @db.Uuid
+  type           MessageType @default(TEXT)
+  body           String?
+  metadata       Json?
+  createdAt      DateTime    @default(now())
+  editedAt       DateTime?
+  deletedAt      DateTime?
+
+  conversation         Conversation              @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender               User                      @relation("MessagesSent", fields: [senderId], references: [id], onDelete: Cascade)
+  attachments          MessageAttachment[]
+  readReceipts         MessageReadReceipt[]
+  participantLastReads ConversationParticipant[] @relation("ParticipantLastReadMessage")
+  analyticsEvents      AnalyticsEvent[]
+
+  @@index([conversationId, createdAt])
+  @@index([senderId, createdAt])
+  @@index([deletedAt])
+}
+
+model MessageAttachment {
+  id           String   @id @default(uuid()) @db.Uuid
+  messageId    String   @db.Uuid
+  mediaAssetId String   @db.Uuid
+  caption      String?
+  createdAt    DateTime @default(now())
+
+  message    Message    @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  mediaAsset MediaAsset @relation(fields: [mediaAssetId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, mediaAssetId])
+  @@index([mediaAssetId])
+}
+
+model MessageReadReceipt {
+  messageId String   @db.Uuid
+  userId    String   @db.Uuid
+  readAt    DateTime @default(now())
+
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([messageId, userId])
+  @@index([userId, readAt])
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  type      NotificationType
+  title     String
+  content   String?
+  metadata  Json?
+  isRead    Boolean          @default(false)
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, isRead, createdAt])
+  @@index([userId, type, createdAt])
+  @@index([userId, createdAt])
+  @@index([userId, readAt])
+  @@index([type, createdAt])
+}
+
+model UserVerification {
+  id          String             @id @default(uuid()) @db.Uuid
+  userId      String             @db.Uuid
+  reviewerId  String?            @db.Uuid
+  type        VerificationType
+  status      VerificationStatus @default(PENDING)
+  identifier  String?
+  evidenceUrl String?
+  verifiedAt  DateTime?
+  expiresAt   DateTime?
+  reviewedAt  DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  user             User              @relation("UserVerifications", fields: [userId], references: [id], onDelete: Cascade)
+  reviewer         User?             @relation("VerificationReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+  badges           UserBadge[]
+  reputationEvents ReputationEvent[]
+
+  @@unique([userId, type])
+  @@index([type, status])
+  @@index([reviewerId])
+}
+
+model StartupVerification {
+  id                String             @id @default(uuid()) @db.Uuid
+  startupId          String             @db.Uuid
+  submittedByUserId  String             @db.Uuid
+  reviewerId         String?            @db.Uuid
+  status             VerificationStatus @default(PENDING)
+  evidenceUrl        String?
+  verifiedAt         DateTime?
+  reviewedAt         DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  startup         Startup @relation(fields: [startupId], references: [id], onDelete: Cascade)
+  submittedByUser User    @relation("StartupVerificationSubmitter", fields: [submittedByUserId], references: [id], onDelete: Cascade)
+  reviewer        User?   @relation("StartupVerificationReviewer", fields: [reviewerId], references: [id], onDelete: SetNull)
+
+  @@index([startupId, status])
+  @@index([submittedByUserId])
+  @@index([reviewerId])
+}
+
+model UserBadge {
+  id                   String    @id @default(uuid()) @db.Uuid
+  userId               String    @db.Uuid
+  sourceVerificationId String?   @db.Uuid
+  type                 BadgeType
+  label                String
+  awardedAt            DateTime  @default(now())
+  expiresAt            DateTime?
+  revokedAt            DateTime?
+
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceVerification UserVerification? @relation(fields: [sourceVerificationId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, type])
+  @@index([type, awardedAt])
+  @@index([sourceVerificationId])
+}
+
+model UserReputation {
+  userId             String   @id @db.Uuid
+  builderScore       Int      @default(0)
+  trustScore         Int      @default(0)
+  collaborationScore Int      @default(0)
+  calculatedAt       DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([builderScore])
+  @@index([trustScore])
+  @@index([collaborationScore])
+}
+
+model ReputationEvent {
+  id                   String              @id @default(uuid()) @db.Uuid
+  userId               String              @db.Uuid
+  sourceMilestoneId    String?             @db.Uuid
+  sourceReviewId       String?             @db.Uuid
+  sourceVerificationId String?             @db.Uuid
+  area                 ReputationArea
+  eventType            ReputationEventType
+  delta                Int
+  reason               String?
+  createdAt            DateTime            @default(now())
+
+  user               User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sourceMilestone    UserMilestone?    @relation(fields: [sourceMilestoneId], references: [id], onDelete: SetNull)
+  sourceReview       Review?           @relation(fields: [sourceReviewId], references: [id], onDelete: SetNull)
+  sourceVerification UserVerification? @relation(fields: [sourceVerificationId], references: [id], onDelete: SetNull)
+
+  @@index([userId, area, createdAt])
+  @@index([eventType, createdAt])
+  @@index([sourceMilestoneId])
+  @@index([sourceReviewId])
+  @@index([sourceVerificationId])
+}
+
+model MilestoneDefinition {
+  id                 String        @id @default(uuid()) @db.Uuid
+  type               MilestoneType
+  name               String
+  description        String?
+  builderScoreWeight Int           @default(0)
+  isSystem           Boolean       @default(true)
+  createdAt          DateTime      @default(now())
+
+  userMilestones UserMilestone[]
+
+  @@unique([type, name])
+  @@index([isSystem])
+}
+
+model UserMilestone {
+  id                    String          @id @default(uuid()) @db.Uuid
+  userId                String          @db.Uuid
+  startupId             String?         @db.Uuid
+  milestoneDefinitionId String          @db.Uuid
+  status                MilestoneStatus @default(PLANNED)
+  evidenceUrl           String?
+  completedAt           DateTime?
+  verifiedAt            DateTime?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startup             Startup?            @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  milestoneDefinition MilestoneDefinition @relation(fields: [milestoneDefinitionId], references: [id], onDelete: Restrict)
+  reputationEvents    ReputationEvent[]
+
+  @@index([userId, status, completedAt])
+  @@index([startupId, status])
+  @@index([milestoneDefinitionId])
+}
+
+model Review {
+  id                  String       @id @default(uuid()) @db.Uuid
+  reviewerId          String       @db.Uuid
+  reviewedUserId      String       @db.Uuid
+  userMatchId         String?      @db.Uuid
+  startupMatchId      String?      @db.Uuid
+  opportunityMatchId  String?      @db.Uuid
+  communicationRating Int
+  reliabilityRating   Int
+  technicalSkillRating Int
+  overallRating       Int
+  writtenFeedback     String?
+  status              ReviewStatus @default(PUBLISHED)
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  reviewer         User                  @relation("ReviewsWritten", fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewedUser     User                  @relation("ReviewsReceived", fields: [reviewedUserId], references: [id], onDelete: Cascade)
+  userMatch        UserMatch?            @relation(fields: [userMatchId], references: [id], onDelete: SetNull)
+  startupMatch     UserStartupMatch?     @relation(fields: [startupMatchId], references: [id], onDelete: SetNull)
+  opportunityMatch UserOpportunityMatch? @relation(fields: [opportunityMatchId], references: [id], onDelete: SetNull)
+  reputationEvents ReputationEvent[]
+
+  @@index([reviewedUserId, status, createdAt])
+  @@index([reviewerId, createdAt])
+  @@index([userMatchId])
+  @@index([startupMatchId])
+  @@index([opportunityMatchId])
+}
+
+model Report {
+  id                    String           @id @default(uuid()) @db.Uuid
+  reporterId            String           @db.Uuid
+  reportedUserId        String?          @db.Uuid
+  reportedStartupId     String?          @db.Uuid
+  reportedOpportunityId String?          @db.Uuid
+  assignedModeratorId   String?          @db.Uuid
+  reason                ReportReason
+  details               String?
+  status                ModerationStatus @default(OPEN)
+  resolution            String?
+  createdAt             DateTime         @default(now())
+  updatedAt             DateTime         @updatedAt
+  resolvedAt            DateTime?
+
+  reporter            User                @relation("ReportsSubmitted", fields: [reporterId], references: [id], onDelete: Cascade)
+  reportedUser        User?               @relation("ReportsAgainstUser", fields: [reportedUserId], references: [id], onDelete: SetNull)
+  reportedStartup     Startup?            @relation(fields: [reportedStartupId], references: [id], onDelete: SetNull)
+  reportedOpportunity StartupOpportunity? @relation(fields: [reportedOpportunityId], references: [id], onDelete: SetNull)
+  assignedModerator   User?               @relation("ReportsAssigned", fields: [assignedModeratorId], references: [id], onDelete: SetNull)
+  moderationActions   ModerationAction[]
+
+  @@index([status, createdAt])
+  @@index([reporterId, createdAt])
+  @@index([reportedUserId, status])
+  @@index([reportedStartupId, status])
+  @@index([reportedOpportunityId, status])
+  @@index([assignedModeratorId, status])
+}
+
+model UserBlock {
+  blockerId String   @db.Uuid
+  blockedId String   @db.Uuid
+  reason    String?
+  createdAt DateTime @default(now())
+
+  blocker User @relation("BlocksCreated", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked User @relation("BlockedBy", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@id([blockerId, blockedId])
+  @@index([blockedId])
+}
+
+model ModerationAction {
+  id                  String               @id @default(uuid()) @db.Uuid
+  reportId            String?              @db.Uuid
+  moderatorId         String               @db.Uuid
+  targetType          ModerationTargetType
+  targetUserId        String?              @db.Uuid
+  targetStartupId     String?              @db.Uuid
+  targetOpportunityId String?              @db.Uuid
+  action              ModerationActionType
+  notes               String?
+  createdAt           DateTime             @default(now())
+
+  report            Report?             @relation(fields: [reportId], references: [id], onDelete: SetNull)
+  moderator         User                @relation("ModerationActionsByModerator", fields: [moderatorId], references: [id], onDelete: Cascade)
+  targetUser        User?               @relation("ModerationActionsAgainstUser", fields: [targetUserId], references: [id], onDelete: SetNull)
+  targetStartup     Startup?            @relation(fields: [targetStartupId], references: [id], onDelete: SetNull)
+  targetOpportunity StartupOpportunity? @relation(fields: [targetOpportunityId], references: [id], onDelete: SetNull)
+
+  @@index([reportId])
+  @@index([moderatorId, createdAt])
+  @@index([targetType, createdAt])
+  @@index([targetUserId])
+  @@index([targetStartupId])
+  @@index([targetOpportunityId])
+}
+
+model AnalyticsEvent {
+  id             BigInt             @id @default(autoincrement())
+  eventType      AnalyticsEventType
+  entityType     AnalyticsEntityType
+  actorUserId    String?            @db.Uuid
+  targetUserId   String?            @db.Uuid
+  startupId      String?            @db.Uuid
+  opportunityId  String?            @db.Uuid
+  conversationId String?            @db.Uuid
+  messageId      String?            @db.Uuid
+  sessionId      String?
+  metadata       Json?
+  occurredAt     DateTime           @default(now())
+
+  actorUser    User?               @relation("AnalyticsActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+  targetUser   User?               @relation("AnalyticsTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+  startup      Startup?            @relation(fields: [startupId], references: [id], onDelete: SetNull)
+  opportunity  StartupOpportunity? @relation(fields: [opportunityId], references: [id], onDelete: SetNull)
+  conversation Conversation?       @relation(fields: [conversationId], references: [id], onDelete: SetNull)
+  message      Message?            @relation(fields: [messageId], references: [id], onDelete: SetNull)
+
+  @@index([eventType, occurredAt])
+  @@index([entityType, occurredAt])
+  @@index([eventType, targetUserId, occurredAt])
+  @@index([eventType, startupId, occurredAt])
+  @@index([eventType, opportunityId, occurredAt])
+  @@index([actorUserId, occurredAt])
+  @@index([targetUserId, occurredAt])
+  @@index([startupId, occurredAt])
+  @@index([opportunityId, occurredAt])
+  @@index([conversationId, occurredAt])
+  @@index([messageId, occurredAt])
+}
+
+model AnalyticsDailyMetric {
+  id         BigInt              @id @default(autoincrement())
+  entityType AnalyticsEntityType
+  entityId   String              @db.Uuid
+  metricType AnalyticsMetricType
+  bucketDate DateTime            @db.Date
+  count      Int                 @default(0)
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@unique([entityType, entityId, metricType, bucketDate])
+  @@index([metricType, bucketDate])
+  @@index([entityType, bucketDate])
+}

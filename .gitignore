@@ -1,0 +1,14 @@
+﻿node_modules
+.next
+.env
+.env.local
+.env.production
+dist
+build
+coverage
+*.log
+.vscode
+
+*.tsbuildinfo
+_tmp_*
+tmp-*
