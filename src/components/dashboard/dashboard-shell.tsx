@@ -6,6 +6,8 @@ const sidebarItems = [
   { href: "/profile", label: "Profile", icon: "P" },
   { href: "/profile/edit", label: "Edit Profile", icon: "E" },
   { href: "/founder-vision/edit", label: "Founder Vision", icon: "V" },
+  { href: "/startups", label: "My Startups", icon: "S" },
+  { href: "/startups/new", label: "Create Startup", icon: "+" },
   { href: "/discover", label: "Discovery", icon: "D" },
   { href: "/matches", label: "Matches", icon: "M" },
   { href: "/messages", label: "Messages", icon: "C" },

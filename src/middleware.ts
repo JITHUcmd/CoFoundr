@@ -10,6 +10,7 @@ const protectedRoutePrefixes = [
   "/analytics",
   "/profile",
   "/founder-vision",
+  "/startups",
   "/settings"
 ];
 const authRoutePrefixes = ["/login", "/signup"];
