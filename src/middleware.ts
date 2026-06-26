@@ -1,7 +1,17 @@
 import { NextResponse } from "next/server";
 import { middlewareAuth } from "@/auth.middleware";
 
-const protectedRoutePrefixes = ["/dashboard", "/discover", "/matches", "/messages", "/notifications", "/analytics", "/settings"];
+const protectedRoutePrefixes = [
+  "/dashboard",
+  "/discover",
+  "/matches",
+  "/messages",
+  "/notifications",
+  "/analytics",
+  "/profile",
+  "/founder-vision",
+  "/settings"
+];
 const authRoutePrefixes = ["/login", "/signup"];
 
 export default middlewareAuth((request) => {
